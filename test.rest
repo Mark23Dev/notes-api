@@ -1,0 +1,23 @@
+# GET request
+POST http://localhost:3003/api/auth/register
+
+Content-Type: application/json
+
+{
+  "id": 1,
+  "username": "testuser",
+  "password": "testpassword"
+}
+
+# GET request
+# GET http://localhost:3003/api/notes/2
+
+
+#  PUT request
+PUT http://localhost:3003/api/notes/2
+Content-Type: application/json/1
+
+{
+  "title": "Updated Note Title",
+  "content": "This is the updated content of the note."
+}
