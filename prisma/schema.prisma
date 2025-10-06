@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --------------------------
+// MODELS
+// --------------------------
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String
+  name      String?
+  folders   Folder[]
+  notes     Note[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Folder {
+  id        String   @id @default(cuid())
+  name      String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  notes     Note[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Note {
+  id            String        @id @default(cuid())
+  title         String
+  content       String         // Store as Markdown or HTML string
+  folder        Folder?        @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  folderId      String?
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  tags          NoteTag[]
+  attachments   Attachment[]
+  isFavorite    Boolean        @default(false)
+  isArchived    Boolean        @default(false)
+  isDeleted     Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  notes     NoteTag[]
+  createdAt DateTime @default(now())
+}
+
+model NoteTag {
+  noteId String
+  tagId  String
+  note   Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([noteId, tagId])
+}
+
+model Attachment {
+  id        String   @id @default(cuid())
+  url       String   // File path or cloud URL
+  fileName  String?
+  fileType  String?
+  note      Note     @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  noteId    String
+  createdAt DateTime @default(now())
+}
