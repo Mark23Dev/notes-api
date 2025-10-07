@@ -1,10 +1,10 @@
 import express from "express"
-import { createNote, fetchAllNotes, fetchNoteById, updateNoteById } from "../controllers/notesController.js";
+import { createNote, deleteNoteById, fetchAllNotes, fetchNoteById, updateNoteById } from "../controllers/notesController.js";
 
 const router = express.Router();
 
 // POST /notes → create a note.
-router.post("/", createNote)
+router.post("/",  createNote)
 
 // GET /notes → fetch all notes.
 router.get("/", fetchAllNotes)
@@ -16,5 +16,6 @@ router.get("/:id", fetchNoteById)
 router.put("/:id", updateNoteById)
 
 // DELETE /notes/:id → delete a note.
+router.delete("/:id", deleteNoteById)
 
 export default router

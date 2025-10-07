@@ -1,11 +1,48 @@
-export const createNote = (req, res) => {
-  const newNote = req.body;
-  notes.push(newNote);
-  res.status(201).json({ message: "Note created successfully", notes });
+export const createNote = async (req, res) => {
+  const userId = req.user.userId;
+  const { title, content, folderId, tags, attachents, isFavorite } = req.body;
+
+  // Basic validation
+  if (!title || !content) {
+    return res.status(400).json({ message: "Title and content are required" });
+  }
+  const note = await prisma.note.create({
+    data: {
+      title,
+      content,
+      folderId,
+      userId,
+      isFavorite: isFavorite || false,
+      tags: tags? {
+        create: tags.map((tag)=> ({
+          tag: {
+            connectOrCreate: {
+              where: { name: tag},
+              create: { name: tag }
+            }
+          }
+        }))
+      }: undefined,
+      attachents: attachents ? {
+        create: attachments.map((file)=> ({
+          fileName: file.fileName,
+          fileUrl: file.fileUrl,
+        })),
+      } : undefined,
+      include: {
+        tags: true,
+        attachments: true,
+      },
+    }
+  })
+  res.status(201).json({ message: "Note created successfully", note });
 }
 
 // Fetch all notes
-export const fetchAllNotes = (req, res) => {
+export const fetchAllNotes = async (req, res) => {
+  const userId = req.user.userId;
+
+  const notes = await prisma.notes
   res.status(200).json(notes);
 }
 
