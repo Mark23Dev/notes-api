@@ -12,14 +12,16 @@ datasource db {
 // --------------------------
 
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  password  String
-  name      String?
-  folders   Folder[]
-  notes     Note[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id            String          @id @default(cuid())
+  email         String          @unique
+  password      String
+  name          String?
+  folders       Folder[]
+  notes         Note[]
+  trashFolder   TrashFolder?    @relation("UserTrashFolder")
+  deletedNotes  DeletedNote[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 }
 
 model Folder {
@@ -44,23 +46,41 @@ model Note {
   attachments   Attachment[]
   isFavorite    Boolean        @default(false)
   isArchived    Boolean        @default(false)
-  isDeleted     Boolean        @default(false)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 }
 
+model DeletedNote {
+  id              String      @id @default(cuid())
+  title           String
+  content         String
+  deletedAt       DateTime    @default(now())
+  userId          String      
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trashFolder     TrashFolder @relation(fields: [trashFolderId], references: [id], onDelete: Cascade)
+  trashFolderId   String
+}
+
+model TrashFolder {
+  id            String            @id @default(cuid())
+  name          String            @default("Trash")
+  user          User              @relation("UserTrashFolder", fields: [userId], references: [id], onDelete: Cascade)
+  userId        String            @unique
+  deletedNotes  DeletedNote[]
+}
+
 model Tag {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  notes     NoteTag[]
-  createdAt DateTime @default(now())
+  id          String    @id @default(cuid())
+  name        String    @unique
+  notes       NoteTag[]
+  createdAt   DateTime  @default(now())
 }
 
 model NoteTag {
-  noteId String
-  tagId  String
-  note   Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
-  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  noteId  String
+  tagId   String
+  note    Note    @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([noteId, tagId])
 }
