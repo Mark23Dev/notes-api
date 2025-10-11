@@ -1,5 +1,6 @@
 import prisma from "../../prisma/prismaClient"
 
+// Get User Profile
 export const getProfile = async (req, res) => {
   try { 
     const user = await prisma.user.findUnique({ where: { id: req.user.userId },
@@ -15,6 +16,7 @@ export const getProfile = async (req, res) => {
   }
 }
 
+// Update user profile
 export const updateProfile = async (req, res) => {
   try {
     const { name, email } = req.body;
