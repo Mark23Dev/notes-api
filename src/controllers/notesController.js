@@ -1,3 +1,4 @@
+// Create a new note
 export const createNote = async (req, res) => {
   const userId = req.user.userId;
   const { title, content, folderId, tags, attachents, isFavorite } = req.body;
@@ -65,7 +66,7 @@ export const fetchAllNotes = async (req, res) => {
 //  Get note by ID
 export const fetchNoteById = async (req, res) => {
   const userId = req.user.userId;
-  const noteId = parseInt(req.params.id)
+  const noteId = req.params.id;
 
   try {
     const note = await prisma.note.findFirst({
