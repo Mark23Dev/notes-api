@@ -1,21 +1,22 @@
 import express from "express"
 import { createNote, deleteNoteById, fetchAllNotes, fetchNoteById, updateNoteById } from "../controllers/notesController.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 // POST /notes → create a note.
-router.post("/",  createNote)
+router.post("/", authMiddleware,  createNote)
 
 // GET /notes → fetch all notes.
-router.get("/", fetchAllNotes)
+router.get("/", authMiddleware, fetchAllNotes)
 
 // GET /notes/:id → fetch one note.
-router.get("/:id", fetchNoteById)
+router.get("/:id", authMiddleware, fetchNoteById)
 
 // PUT /notes/:id → update a note.
-router.put("/:id", updateNoteById)
+router.put("/:id", authMiddleware, updateNoteById)
 
 // DELETE /notes/:id → delete a note.
-router.delete("/:id", deleteNoteById)
+router.delete("/:id", authMiddleware, deleteNoteById)
 
 export default router

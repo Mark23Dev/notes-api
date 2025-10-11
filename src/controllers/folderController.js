@@ -1,3 +1,5 @@
+import prisma from "../../prisma/prismaClient.js";
+
 // Create a new folder --POST
 export const createFolder = async (req, res) => {
     const { name } = req.body;
@@ -25,7 +27,7 @@ export const createFolder = async (req, res) => {
 }
 
 // GET all folders
-const getAllFolders = async (req, res) =>  {
+export const getAllFolders = async (req, res) =>  {
     try {
         const userId = req.user.userId;
 
@@ -47,7 +49,7 @@ const getAllFolders = async (req, res) =>  {
 }
 
 // GET folder by id
-const getFolderById = async (req, res) => {
+export const getFolderById = async (req, res) => {
     const userId = req.user.userId;
     const folderId = req.params.id;
 
@@ -76,7 +78,7 @@ const getFolderById = async (req, res) => {
 }
 
 // Update folder -- PUT
-const updateFolder = async (req, res) => {
+export const updateFolder = async (req, res) => {
     const userId = req.user.userId;
     const folderId = req.params.id;
 
@@ -114,7 +116,7 @@ const updateFolder = async (req, res) => {
 }
 
 // Delete folder
-const deleteFolder = async (req, res) => {
+export const deleteFolder = async (req, res) => {
     const userId = req.user.userId;
     const folderId = req.params.id;
 

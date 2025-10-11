@@ -1,3 +1,5 @@
+import prisma from "../../prisma/prismaClient.js";
+
 // Create a new note
 export const createNote = async (req, res) => {
   const userId = req.user.userId;
