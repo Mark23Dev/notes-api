@@ -15,3 +15,5 @@ router.get("/:noteId", authMiddleware, fetchAllNoteTags);
 
 // Remove a tag from a note
 router.delete("/:noteId", authMiddleware, deleteTagFromNote);
+
+export default router;

@@ -1,6 +1,6 @@
 import express from "express";
-import authMiddleware from "../middleware/authMiddleware";
-import { deleteAttachment, getAllNoteAttachments, getAttachment, uploadAttachment } from "../controllers/attachmentController";
+import authMiddleware from "../middleware/authMiddleware.js";
+import { deleteAttachment, getAllNoteAttachments, getAttachment, uploadAttachment } from "../controllers/attachmentController.js";
 
 const router = express.Router();
 

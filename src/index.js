@@ -4,6 +4,7 @@ import notesRoutes from './routes/notesRoutes.js'
 import userRoutes from './routes/userRoutes.js';
 import folderRoutes from './routes/folderRoutes.js';
 import attachmentRoutes from './routes/attachmentRoutes.js';
+import tagRoutes from './routes/tagsRoute.js';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
@@ -24,8 +25,9 @@ app.use('/api/notes', notesRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/folders', folderRoutes);
 app.use('api/attachments', attachmentRoutes);
+app.use('/api/tags', tagRoutes);
 
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Server listening on port ${port}`)
 })
