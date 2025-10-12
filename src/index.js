@@ -1,6 +1,9 @@
 import express from 'express'
 import authRoutes from './routes/authRoutes.js'
 import notesRoutes from './routes/notesRoutes.js'
+import userRoutes from './routes/userRoutes.js';
+import folderRoutes from './routes/folderRoutes.js';
+import attachmentRoutes from './routes/attachmentRoutes.js';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
@@ -16,9 +19,11 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-app.use('/api/auth', authRoutes)
-app.use('/api/notes', notesRoutes)
-app.use('/api/user', userRoutes)
+app.use('/api/auth', authRoutes);
+app.use('/api/notes', notesRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/folders', folderRoutes);
+app.use('api/attachments', attachmentRoutes);
 
 
 app.listen(port, () => {
