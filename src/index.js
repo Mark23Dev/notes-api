@@ -22,7 +22,7 @@ app.use(cookieParser());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', notesRoutes);
-app.use('/api/users', userRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api/folders', folderRoutes);
 app.use('api/attachments', attachmentRoutes);
 app.use('/api/tags', tagRoutes);
