@@ -21,18 +21,26 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Configure cors
-const allowedOrigins = [
-  "http://localhost:5173", // for local dev
-  "https://your-frontend-domain.vercel.app"
-];
-
 app.use(
   cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    origin: function (origin, callback) {
+      const allowedOrigins = [
+        "http://localhost:5173", // local dev
+        "https://frontend-domain.vercel.app", // production
+      ];
+
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
+
 
 
 // Routes

@@ -19,8 +19,6 @@ export const login = async (req, res) => {
     }
 
     // Check if password matches
-    const isPasswordValid = bcrypt.compareSync(password, user.password)
-
     const valid = bcrypt.compareSync(password, user.password)
 
     if (!valid) {
@@ -37,10 +35,11 @@ export const login = async (req, res) => {
     // token in HTTP-only cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000 // 1 day
+      secure: process.env.NODE_ENV === "production" ? true : false,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 24 * 60 * 60 * 1000
     })
+
 
     res.status(200).json({ message: "Login successful", user: {
       id: user.id, name: user.name, email: user.email
